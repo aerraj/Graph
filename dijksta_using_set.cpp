@@ -10,26 +10,28 @@ public:
     // from the source vertex S.
     vector<int> dijkstra(int V, vector<vector<int>> adj[], int S)
     {
-
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        set<pair<int, int>> st;
         vector<int> distTo(V, INT_MAX);
         distTo[S] = 0;
-        pq.push({0, S});
+        st.insert({0, S});
 
-        while (!pq.empty())
+        while (!st.empty())
         {
-            int node = pq.top().second;
-            int dis = pq.top().first;
-            pq.pop();
+            auto it = *(st.begin());
+            int node = it.second;
+            int dis = it.first;
+            st.erase(it);
 
             for (auto it : adj[node])
             {
-                int v = it[0]; //node
-                int w = it[1]; // weighted distance
+                int v = it[0]; // node
+                int w = it[1]; // wt
                 if (dis + w < distTo[v])
                 {
+                    if (distTo[v] != INT_MAX)
+                        st.erase({distTo[v], v});
                     distTo[v] = dis + w;
-                    pq.push({dis + w, v});
+                    st.insert({dis + w, v});
                 }
             }
         }
