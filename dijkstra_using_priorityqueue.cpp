@@ -12,29 +12,28 @@ public:
     {
 
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        vector<int> distTo(V, INT_MAX);
+        distTo[S] = 0;
         pq.push({0, S});
-        int k = 1e9;
-        vector<int> dis(V, k);
-        dis[0] = 0;
 
         while (!pq.empty())
         {
             int node = pq.top().second;
-            int disto = pq.top().first;
+            int dis = pq.top().first;
             pq.pop();
+
             for (auto it : adj[node])
             {
-                int edgedis = it[1];
-                int adjnode = it[0];
-
-                if (dis[adjnode] > disto + edgedis)
+                int v = it[0];
+                int w = it[1];
+                if (dis + w < distTo[v])
                 {
-                    dis[adjnode] = disto + edgedis;
-                    pq.push({dis[adjnode], adjnode});
+                    distTo[v] = dis + w;
+                    pq.push({dis + w, v});
                 }
             }
         }
-        return dis;
+        return distTo;
     }
 };
 
