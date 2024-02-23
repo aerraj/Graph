@@ -15,6 +15,7 @@ void dfs(int vertex)
     {
         cout<<vertex<<" "<<child<<endl;
         // Takes  action on child before entering the child node
+        if(child!=vertex)
         dfs(child);
         // Takes  action on child after entering the child node
     }
